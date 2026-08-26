@@ -8,11 +8,25 @@ function MainContent() {
       <div className="ticket-list">
         {tickets.map((ticket) => (
           <div className="ticket-card" key={ticket.id}>
-            <h3>{ticket.title}</h3>
-            <p>{ticket.description}</p>
-            <p>Requester: {ticket.requester}</p>
-            <p>Status: {ticket.status}</p>
-            <p>Priority: {ticket.priority}</p>
+            <div className="ticket-card-header">
+              <h3>{ticket.title}</h3>
+              <span
+                className={`priority-badge priority-${ticket.priority.toLowerCase()}`}
+              >
+                {ticket.priority}
+              </span>
+            </div>
+            <p className="ticket-description">{ticket.description}</p>
+            <div className="ticket-meta">
+              <span>Requester: {ticket.requester}</span>
+              <span>Category: {ticket.category}</span>
+              <span>Created: {ticket.createdAt}</span>
+            </div>
+            <span
+              className={`status-badge status-${ticket.status.toLowerCase().replace(' ', '-')}`}
+            >
+              {ticket.status}
+            </span>
           </div>
         ))}
       </div>
