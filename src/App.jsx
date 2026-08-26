@@ -5,11 +5,13 @@ import Sidebar from './components/Sidebar';
 
 function App() {
   return (
-    <>
-      <Header />
-      <Sidebar />
-      <MainContent />
-    </>
+    <div className="app">
+        <Header />
+      <div className="app-body">
+        <Sidebar />
+        <MainContent />
+      </div>
+    </div>
   );
 }
 

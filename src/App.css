@@ -1,0 +1,22 @@
+#root {
+  width: 100%;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+.app-body {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+aside {
+  width: 220px;
+  flex-shrink: 0;
+}
+
+main {
+  flex: 1;
+}
