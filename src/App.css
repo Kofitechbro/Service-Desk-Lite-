@@ -115,6 +115,12 @@ main {
   border-color: #3b82f6;
 }
 
+.no-results {
+  text-align: center;
+  color: #64748b;
+  padding: 2rem 0;
+}
+
 .ticket-list {
   display: flex;
   flex-direction: column;
