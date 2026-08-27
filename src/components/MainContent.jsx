@@ -2,7 +2,7 @@ import { useState } from 'react';
 import tickets from '../data/tickets';
 import Dashboard from './Dashboard';
 
-function MainContent() {
+function MainContent({ isFormOpen, onCloseForm }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
@@ -24,6 +24,15 @@ function MainContent() {
   return (
     <main>
       <Dashboard />
+
+      {isFormOpen && (
+        <div className="create-ticket-placeholder">
+          <p>This is where the Create Ticket form will go.</p>
+          <button type="button" onClick={onCloseForm}>
+            Close
+          </button>
+        </div>
+      )}
 
       <div className="filters-bar">
         <input
