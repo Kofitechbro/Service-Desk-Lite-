@@ -1,8 +1,11 @@
 import tickets from '../data/tickets';
+import Dashboard from './Dashboard';
 
 function MainContent() {
   return (
     <main>
+      <Dashboard />
+
       <h2>All Tickets</h2>
 
       <div className="ticket-list">
