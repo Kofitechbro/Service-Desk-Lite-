@@ -101,16 +101,31 @@ main {
   margin-top: 0.25rem;
 }
 
+.filters-bar {
+  display: flex;
+  gap: 0.75rem;
+  flex: 1;
+  margin-bottom: 1.5rem;
+}
+
 .search-input {
   width: 100%;
+}
+
+.search-input,
+.filter-select {
   padding: 0.5rem 1rem;
   border: 1px solid #cbd5e1;
   border-radius: 0.5rem;
   font-size: 1rem;
-  margin-bottom: 1.5rem;
 }
 
-.search-input:focus {
+.filter-select {
+  cursor: pointer;
+}
+
+.search-input:focus,
+.filter-select:focus {
   outline: none;
   border-color: #3b82f6;
 }
