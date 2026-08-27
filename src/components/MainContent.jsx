@@ -1,15 +1,32 @@
+import { useState } from 'react';
 import tickets from '../data/tickets';
 import Dashboard from './Dashboard';
 
 function MainContent() {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredTickets = tickets.filter((ticket) =>
+    ticket.title
+      .toLowerCase()
+      .replace('-', '')
+      .includes(searchTerm.toLowerCase().replace('-', '')),
+  );
+
   return (
     <main>
       <Dashboard />
 
+      <input
+        type="search"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
+      />
+
       <h2>All Tickets</h2>
 
       <div className="ticket-list">
-        {tickets.map((ticket) => (
+        {filteredTickets.map((ticket) => (
           <div className="ticket-card" key={ticket.id}>
             <div className="ticket-card-header">
               <h3>{ticket.title}</h3>

@@ -101,6 +101,20 @@ main {
   margin-top: 0.25rem;
 }
 
+.search-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
 .ticket-list {
   display: flex;
   flex-direction: column;
