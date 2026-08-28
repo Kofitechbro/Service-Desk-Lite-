@@ -23,7 +23,29 @@ function MainContent({ isFormOpen, onCloseForm }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log('Form submitted with:', formData);
+
+    const nextNumber = ticketList.length + 1;
+    const newId = `SD-${String(nextNumber).padStart(3, '0')}`;
+    const today = new Date().toISOString().split('T')[0];
+
+    const newTicket = {
+      ...formData,
+      id: newId,
+      createdAt: today,
+      status: 'Open',
+    };
+
+    setTicketList([...ticketList, newTicket]);
+
+    setFormData({
+      title: '',
+      description: '',
+      requester: '',
+      category: 'Hardware',
+      priority: 'Low',
+    });
+
+    onCloseForm();
   }
 
   const filteredTickets = ticketList.filter((ticket) => {
@@ -170,6 +192,7 @@ function MainContent({ isFormOpen, onCloseForm }) {
               </div>
               <p className="ticket-description">{ticket.description}</p>
               <div className="ticket-meta">
+                <span>ID: {ticket.id}</span>
                 <span>Requester: {ticket.requester}</span>
                 <span>Category: {ticket.category}</span>
                 <span>Created: {ticket.createdAt}</span>
