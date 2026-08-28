@@ -7,6 +7,19 @@ function MainContent({ isFormOpen, onCloseForm }) {
   const [statusFilter, setStatusFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
 
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    requester: '',
+    category: 'Hardware',
+    priority: 'Low',
+  });
+
+  function handleChange(e) {
+    const {name, value} = e.target;
+    setFormData({ ...formData, [name]: value });
+  }
+
   const filteredTickets = tickets.filter((ticket) => {
     const matchesSearch = ticket.title
       .toLowerCase()
@@ -26,15 +39,81 @@ function MainContent({ isFormOpen, onCloseForm }) {
       <Dashboard />
 
       {isFormOpen && (
-        <div className="create-ticket-placeholder">
-          <p>This is where the Create Ticket form will go.</p>
-          <button type="button" onClick={onCloseForm}>
-            Close
-          </button>
+        <div className="create-ticket-form">
+          <div className="form-header">
+            <h2>Create New Ticket</h2>
+            <button type="button" onClick={onCloseForm} className="close-btn">
+              ×
+            </button>
+          </div>
+
+          <form>
+            <label>
+              Title
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+              />
+            </label>
+
+            <label>
+              Description
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows={3}
+              />
+            </label>
+
+            <label>
+              Requester
+              <input
+                type="text"
+                name="requester"
+                value={formData.requester}
+                onChange={handleChange}
+              />
+            </label>
+
+            <label>
+              Category
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+              >
+                <option value="Hardware">Hardware</option>
+                <option value="Networking">Networking</option>
+                <option value="Account">Account</option>
+                <option value="Application">Application</option>
+              </select>
+            </label>
+
+            <label>
+              Priority
+              <select
+                name="priority"
+                value={formData.priority}
+                onChange={handleChange}
+              >
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+              </select>
+            </label>
+
+            <button type="submit" className="submit-btn">
+              Create Ticket
+            </button>
+          </form>
         </div>
       )}
 
-      <div className="filters-bar">
+      <section className="filters-bar">
         <input
           type="search"
           value={searchTerm}
@@ -65,9 +144,9 @@ function MainContent({ isFormOpen, onCloseForm }) {
           <option value="High">High</option>
           <option value="Urgent">Urgent</option>
         </select>
-      </div>
+      </section>
 
-      <h2>All Tickets</h2>
+      <h2 className="ticket-title">All Tickets</h2>
 
       {filteredTickets.length === 0 ? (
         <p className="no-results">No results found</p>
