@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import tickets from '../data/tickets';
+import initialTickets from '../data/tickets';
 import Dashboard from './Dashboard';
 
 function MainContent({ isFormOpen, onCloseForm }) {
+  const [ticketList, setTicketList] = useState(initialTickets);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
@@ -16,11 +17,16 @@ function MainContent({ isFormOpen, onCloseForm }) {
   });
 
   function handleChange(e) {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   }
 
-  const filteredTickets = tickets.filter((ticket) => {
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log('Form submitted with:', formData);
+  }
+
+  const filteredTickets = ticketList.filter((ticket) => {
     const matchesSearch = ticket.title
       .toLowerCase()
       .replace('-', '')
@@ -47,7 +53,7 @@ function MainContent({ isFormOpen, onCloseForm }) {
             </button>
           </div>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <label>
               Title
               <input
@@ -86,7 +92,7 @@ function MainContent({ isFormOpen, onCloseForm }) {
                 onChange={handleChange}
               >
                 <option value="Hardware">Hardware</option>
-                <option value="Networking">Networking</option>
+                <option value="Network">Network</option>
                 <option value="Account">Account</option>
                 <option value="Application">Application</option>
               </select>
