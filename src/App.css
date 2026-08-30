@@ -293,3 +293,12 @@ main {
 .submit-btn:hover {
   background-color: #2563eb;
 }
+
+.form-error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}

@@ -4,6 +4,7 @@ import Dashboard from './Dashboard';
 
 function MainContent({ isFormOpen, onCloseForm }) {
   const [ticketList, setTicketList] = useState(initialTickets);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
@@ -16,6 +17,8 @@ function MainContent({ isFormOpen, onCloseForm }) {
     priority: 'Low',
   });
 
+  const [error, setError] = useState('');
+
   function handleChange(e) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -23,6 +26,17 @@ function MainContent({ isFormOpen, onCloseForm }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    if (
+      !formData.title.trim() ||
+      !formData.description.trim() ||
+      !formData.requester.trim()
+    ) {
+      setError('Title, description, and requester are all required.');
+      return;
+    }
+
+    setError('');
 
     const nextNumber = ticketList.length + 1;
     const newId = `SD-${String(nextNumber).padStart(3, '0')}`;
@@ -133,6 +147,8 @@ function MainContent({ isFormOpen, onCloseForm }) {
                 <option value="Urgent">Urgent</option>
               </select>
             </label>
+
+            {error && <p className="form-error">{error}</p>}
 
             <button type="submit" className="submit-btn">
               Create Ticket
