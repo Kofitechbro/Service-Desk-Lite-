@@ -1,6 +1,6 @@
 import tickets from '../data/tickets';
 
-export function Dashboard() {
+export function Dashboard({tickets}) {
   const totalCount = tickets.length;
   const openCount = tickets.filter((ticket) => ticket.status === 'Open').length;
   const inprogressCount = tickets.filter(

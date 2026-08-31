@@ -76,9 +76,19 @@ function MainContent({ isFormOpen, onCloseForm }) {
     return matchesSearch && matchesStatus && matchesPriority;
   });
 
+  function handleStatusChange(ticketId, newStatus) {
+    const updatedTickets = ticketList.map((ticket) => {
+      if (ticket.id === ticketId) {
+        return { ...ticket, status: newStatus };
+      }
+      return ticket;
+    });
+    setTicketList(updatedTickets);
+  }
+
   return (
     <main>
-      <Dashboard />
+      <Dashboard tickets={ticketList} />
 
       {isFormOpen && (
         <div className="create-ticket-form">
@@ -213,11 +223,15 @@ function MainContent({ isFormOpen, onCloseForm }) {
                 <span>Category: {ticket.category}</span>
                 <span>Created: {ticket.createdAt}</span>
               </div>
-              <span
+              <select
                 className={`status-badge status-${ticket.status.toLowerCase().replace(' ', '-')}`}
+                value={ticket.status}
+                onChange={(e) => handleStatusChange(ticket.id, e.target.value)}
               >
-                {ticket.status}
-              </span>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+              </select>
             </div>
           ))}
         </div>
