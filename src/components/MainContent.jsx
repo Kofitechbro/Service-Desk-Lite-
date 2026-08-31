@@ -86,6 +86,16 @@ function MainContent({ isFormOpen, onCloseForm }) {
     setTicketList(updatedTickets);
   }
 
+  function handlePriorityChange(ticketId, newPriority) {
+    const updatedTickets = ticketList.map((ticket) => {
+      if (ticket.id === ticketId) {
+        return { ...ticket, priority: newPriority };
+      }
+      return ticket;
+    });
+    setTicketList(updatedTickets);
+  }
+
   return (
     <main>
       <Dashboard tickets={ticketList} />
@@ -210,11 +220,18 @@ function MainContent({ isFormOpen, onCloseForm }) {
             <div className="ticket-card" key={ticket.id}>
               <div className="ticket-card-header">
                 <h3>{ticket.title}</h3>
-                <span
+                <select
                   className={`priority-badge priority-${ticket.priority.toLowerCase()}`}
+                  value={ticket.priority}
+                  onChange={(e) =>
+                    handlePriorityChange(ticket.id, e.target.value)
+                  }
                 >
-                  {ticket.priority}
-                </span>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                  <option value="Urgent">Urgent</option>
+                </select>
               </div>
               <p className="ticket-description">{ticket.description}</p>
               <div className="ticket-meta">
