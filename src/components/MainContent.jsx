@@ -96,6 +96,21 @@ function MainContent({ isFormOpen, onCloseForm }) {
     setTicketList(updatedTickets);
   }
 
+  // Function to handle ticket deletion with confirmation
+  function handleDeleteTicket(ticketId) {
+    const isConfirmed = confirm('Are you sure you want to delete this ticket?'); // Show confirmation dialog
+
+    if (isConfirmed) {
+      // If the user confirms, proceed with deletion
+      const updatedTickets = ticketList.filter(
+        (ticket) => ticket.id !== ticketId,
+      ); // Filter out the ticket to be deleted
+      setTicketList(updatedTickets); // Update the state with the new ticket list
+      return true; // Indicate that the ticket was deleted
+    }
+    return false; // Indicate that the ticket was not deleted
+  }
+
   return (
     <main>
       <Dashboard tickets={ticketList} />
@@ -240,15 +255,26 @@ function MainContent({ isFormOpen, onCloseForm }) {
                 <span>Category: {ticket.category}</span>
                 <span>Created: {ticket.createdAt}</span>
               </div>
-              <select
-                className={`status-badge status-${ticket.status.toLowerCase().replace(' ', '-')}`}
-                value={ticket.status}
-                onChange={(e) => handleStatusChange(ticket.id, e.target.value)}
-              >
-                <option value="Open">Open</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Resolved">Resolved</option>
-              </select>
+              <div className="ticket-actions">
+                <select
+                  className={`status-badge status-${ticket.status.toLowerCase().replace(' ', '-')}`}
+                  value={ticket.status}
+                  onChange={(e) =>
+                    handleStatusChange(ticket.id, e.target.value)
+                  }
+                >
+                  <option value="Open">Open</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+
+                <button
+                  className="delete-btn"
+                  onClick={() => handleDeleteTicket(ticket.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>

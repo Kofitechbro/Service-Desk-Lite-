@@ -174,7 +174,7 @@ main {
 
 .ticket-description {
   color: #475569;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .ticket-meta {
@@ -182,7 +182,7 @@ main {
   gap: 1rem;
   font-size: 0.75rem;
   color: #64748b;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .priority-badge,
@@ -301,4 +301,25 @@ main {
   border-radius: 0.5rem;
   font-size: 0.85rem;
   font-weight: 600;
+}
+
+.ticket-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delete-btn {
+  background-color: transparent;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #fee2e2;
 }
