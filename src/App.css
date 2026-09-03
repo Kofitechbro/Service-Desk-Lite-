@@ -309,6 +309,11 @@ main {
   align-items: center;
 }
 
+.ticket-cta {
+  display: flex;
+  gap: 0.25rem;
+}
+
 .delete-btn {
   background-color: transparent;
   color: #b91c1c;
@@ -322,4 +327,20 @@ main {
 
 .delete-btn:hover {
   background-color: #fee2e2;
+}
+
+
+.edit-btn {
+  background-color: transparent;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background-color: #dbeafe;
 }

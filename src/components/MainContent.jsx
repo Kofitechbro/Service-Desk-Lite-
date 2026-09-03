@@ -8,6 +8,7 @@ function MainContent({ isFormOpen, onCloseForm }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
+  const [editingTicket, setEditingTicket] = useState(null);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -38,18 +39,29 @@ function MainContent({ isFormOpen, onCloseForm }) {
 
     setError('');
 
-    const nextNumber = ticketList.length + 1;
-    const newId = `SD-${String(nextNumber).padStart(3, '0')}`;
-    const today = new Date().toISOString().split('T')[0];
+    if (editingTicket) {
+      const updatedTickets = ticketList.map((ticket) => {
+        if (ticket.id === editingTicket.id) {
+          return { ...ticket, ...formData };
+        }
+        return ticket;
+      });
+      setTicketList(updatedTickets);
+      setEditingTicket(null);
+    } else {
+      const nextNumber = ticketList.length + 1;
+      const newId = `SD-${String(nextNumber).padStart(3, '0')}`;
+      const today = new Date().toISOString().split('T')[0];
 
-    const newTicket = {
-      ...formData,
-      id: newId,
-      createdAt: today,
-      status: 'Open',
-    };
+      const newTicket = {
+        ...formData,
+        id: newId,
+        createdAt: today,
+        status: 'Open',
+      };
 
-    setTicketList([...ticketList, newTicket]);
+      setTicketList([...ticketList, newTicket]);
+    }
 
     setFormData({
       title: '',
@@ -111,15 +123,36 @@ function MainContent({ isFormOpen, onCloseForm }) {
     return false; // Indicate that the ticket was not deleted
   }
 
+  // Function to handle ticket editing
+  function handleEditTicket(ticket) {
+    setEditingTicket(ticket); // Set the ticket to be edited
+
+    // Pre-fill the form with the ticket's current data
+    setFormData({
+      title: ticket.title,
+      description: ticket.description,
+      requester: ticket.requester,
+      category: ticket.category,
+      priority: ticket.priority,
+    });
+  }
+
   return (
     <main>
       <Dashboard tickets={ticketList} />
 
-      {isFormOpen && (
+      {(isFormOpen || editingTicket) && (
         <div className="create-ticket-form">
           <div className="form-header">
-            <h2>Create New Ticket</h2>
-            <button type="button" onClick={onCloseForm} className="close-btn">
+            <h2>{editingTicket ? 'Edit Ticket' : 'Create New Ticket'}</h2>
+            <button
+              type="button"
+              onClick={() => {
+                setEditingTicket(null);
+                onCloseForm();
+              }}
+              className="close-btn"
+            >
               ×
             </button>
           </div>
@@ -268,12 +301,21 @@ function MainContent({ isFormOpen, onCloseForm }) {
                   <option value="Resolved">Resolved</option>
                 </select>
 
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDeleteTicket(ticket.id)}
-                >
-                  Delete
-                </button>
+                <div className="ticket-cta">
+                  <button
+                    className="edit-btn"
+                    onClick={() => handleEditTicket(ticket)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteTicket(ticket.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))}
