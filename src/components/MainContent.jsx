@@ -2,14 +2,24 @@ import { useState } from 'react';
 import initialTickets from '../data/tickets';
 import Dashboard from './Dashboard';
 
-function MainContent({ isFormOpen, onCloseForm }) {
+function MainContent({
+  isFormOpen,
+  onCloseForm,
+  onSelectTicket,
+  selectedTicket,
+}) {
+  // State to manage the list of tickets
   const [ticketList, setTicketList] = useState(initialTickets);
 
+  // State to manage search term and filters
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [priorityFilter, setPriorityFilter] = useState('All');
+
+  // State to manage the ticket being edited
   const [editingTicket, setEditingTicket] = useState(null);
 
+  // State to manage form data for creating or editing a ticket
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -18,13 +28,16 @@ function MainContent({ isFormOpen, onCloseForm }) {
     priority: 'Low',
   });
 
+  // State to manage form validation errors
   const [error, setError] = useState('');
 
+  // Function to handle form input changes
   function handleChange(e) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   }
 
+  // Function to handle form submission for creating or editing a ticket
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -74,6 +87,7 @@ function MainContent({ isFormOpen, onCloseForm }) {
     onCloseForm();
   }
 
+  // Filter tickets based on search term, status, and priority
   const filteredTickets = ticketList.filter((ticket) => {
     const matchesSearch = ticket.title
       .toLowerCase()
@@ -88,6 +102,7 @@ function MainContent({ isFormOpen, onCloseForm }) {
     return matchesSearch && matchesStatus && matchesPriority;
   });
 
+  // Function to handle status change
   function handleStatusChange(ticketId, newStatus) {
     const updatedTickets = ticketList.map((ticket) => {
       if (ticket.id === ticketId) {
@@ -98,6 +113,7 @@ function MainContent({ isFormOpen, onCloseForm }) {
     setTicketList(updatedTickets);
   }
 
+  // Function to handle priority change
   function handlePriorityChange(ticketId, newPriority) {
     const updatedTickets = ticketList.map((ticket) => {
       if (ticket.id === ticketId) {
@@ -137,10 +153,17 @@ function MainContent({ isFormOpen, onCloseForm }) {
     });
   }
 
+  function handleViewTicket(ticket) {
+    onSelectTicket(ticket);
+  }
+
   return (
     <main>
+      {/* Render the Dashboard component and pass the ticketList as a prop */}
       <Dashboard tickets={ticketList} />
 
+      {/* Render the ticket creation/editing form if isFormOpen or editingTicket
+      is true */}
       {(isFormOpen || editingTicket) && (
         <div className="create-ticket-form">
           <div className="form-header">
@@ -219,107 +242,162 @@ function MainContent({ isFormOpen, onCloseForm }) {
             {error && <p className="form-error">{error}</p>}
 
             <button type="submit" className="submit-btn">
-              Create Ticket
+              {editingTicket ? 'Update Ticket' : 'Create Ticket'}
             </button>
           </form>
         </div>
       )}
 
-      <section className="filters-bar">
-        <input
-          type="search"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search ticket title"
-          className="search-input"
-        />
+      {/* Render the ticket details view if a ticket is selected */}
+      {selectedTicket ? (
+        <div className="ticket-details">
+          <button
+            type="button"
+            onClick={() => onSelectTicket(null)}
+            className="back-btn"
+          >
+            ← Back to Tickets
+          </button>
 
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="filter-select"
-        >
-          <option value="All">All Statuses</option>
-          <option value="Open">Open</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Resolved">Resolved</option>
-        </select>
+          <div className="ticket-details-header">
+            <h2>{selectedTicket.title}</h2>
+            <span
+              className={`priority-badge priority-${selectedTicket.priority.toLowerCase()}`}
+            >
+              {selectedTicket.priority}
+            </span>
+          </div>
 
-        <select
-          value={priorityFilter}
-          onChange={(e) => setPriorityFilter(e.target.value)}
-          className="filter-select"
-        >
-          <option value="All">All Priorities</option>
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-          <option value="Urgent">Urgent</option>
-        </select>
-      </section>
+          <span
+            className={`status-badge status-${selectedTicket.status.toLowerCase().replace(' ', '-')}`}
+          >
+            <strong>Status:</strong> {selectedTicket.status}
+          </span>
 
-      <h2 className="ticket-title">All Tickets</h2>
+          <p className="ticket-details-description">
+            {selectedTicket.description}
+          </p>
 
-      {filteredTickets.length === 0 ? (
-        <p className="no-results">No results found</p>
-      ) : (
-        <div className="ticket-list">
-          {filteredTickets.map((ticket) => (
-            <div className="ticket-card" key={ticket.id}>
-              <div className="ticket-card-header">
-                <h3>{ticket.title}</h3>
-                <select
-                  className={`priority-badge priority-${ticket.priority.toLowerCase()}`}
-                  value={ticket.priority}
-                  onChange={(e) =>
-                    handlePriorityChange(ticket.id, e.target.value)
-                  }
-                >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                  <option value="Urgent">Urgent</option>
-                </select>
-              </div>
-              <p className="ticket-description">{ticket.description}</p>
-              <div className="ticket-meta">
-                <span>ID: {ticket.id}</span>
-                <span>Requester: {ticket.requester}</span>
-                <span>Category: {ticket.category}</span>
-                <span>Created: {ticket.createdAt}</span>
-              </div>
-              <div className="ticket-actions">
-                <select
-                  className={`status-badge status-${ticket.status.toLowerCase().replace(' ', '-')}`}
-                  value={ticket.status}
-                  onChange={(e) =>
-                    handleStatusChange(ticket.id, e.target.value)
-                  }
-                >
-                  <option value="Open">Open</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Resolved">Resolved</option>
-                </select>
-
-                <div className="ticket-cta">
-                  <button
-                    className="edit-btn"
-                    onClick={() => handleEditTicket(ticket)}
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    className="delete-btn"
-                    onClick={() => handleDeleteTicket(ticket.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+          <div className="ticket-details-meta">
+            <span>
+              <strong>ID:</strong> {selectedTicket.id}
+            </span>
+            <span>
+              <strong>Requester:</strong> {selectedTicket.requester}
+            </span>
+            <span>
+              <strong>Category:</strong> {selectedTicket.category}
+            </span>
+            <span>
+              <strong>Created:</strong> {selectedTicket.createdAt}
+            </span>
+          </div>
         </div>
+      ) : (
+        <>
+          <section className="filters-bar">
+            <input
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search ticket title"
+              className="search-input"
+            />
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="All">All Statuses</option>
+              <option value="Open">Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+            </select>
+
+            <select
+              value={priorityFilter}
+              onChange={(e) => setPriorityFilter(e.target.value)}
+              className="filter-select"
+            >
+              <option value="All">All Priorities</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Urgent">Urgent</option>
+            </select>
+          </section>
+
+          <h2 className="ticket-title">All Tickets</h2>
+
+          {/* Render the list of filtered tickets or a message if no results are found */}
+          {filteredTickets.length === 0 ? (
+            <p className="no-results">No results found</p>
+          ) : (
+            <div className="ticket-list">
+              {filteredTickets.map((ticket) => (
+                <div className="ticket-card" key={ticket.id}>
+                  <div className="ticket-card-header">
+                    <h3
+                      className="ticket-title-link"
+                      onClick={() => handleViewTicket(ticket)}
+                    >
+                      {ticket.title}
+                    </h3>
+                    <select
+                      className={`priority-badge priority-${ticket.priority.toLowerCase()}`}
+                      value={ticket.priority}
+                      onChange={(e) =>
+                        handlePriorityChange(ticket.id, e.target.value)
+                      }
+                    >
+                      <option value="Low">Low</option>
+                      <option value="Medium">Medium</option>
+                      <option value="High">High</option>
+                      <option value="Urgent">Urgent</option>
+                    </select>
+                  </div>
+                  <p className="ticket-description">{ticket.description}</p>
+                  <div className="ticket-meta">
+                    <span>ID: {ticket.id}</span>
+                    <span>Requester: {ticket.requester}</span>
+                    <span>Category: {ticket.category}</span>
+                    <span>Created: {ticket.createdAt}</span>
+                  </div>
+                  <div className="ticket-actions">
+                    <select
+                      className={`status-badge status-${ticket.status.toLowerCase().replace(' ', '-')}`}
+                      value={ticket.status}
+                      onChange={(e) =>
+                        handleStatusChange(ticket.id, e.target.value)
+                      }
+                    >
+                      <option value="Open">Open</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Resolved">Resolved</option>
+                    </select>
+
+                    <div className="ticket-cta">
+                      <button
+                        className="edit-btn"
+                        onClick={() => handleEditTicket(ticket)}
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDeleteTicket(ticket.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </main>
   );

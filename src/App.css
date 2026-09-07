@@ -329,7 +329,6 @@ main {
   background-color: #fee2e2;
 }
 
-
 .edit-btn {
   background-color: transparent;
   color: #1e40af;
@@ -343,4 +342,62 @@ main {
 
 .edit-btn:hover {
   background-color: #dbeafe;
+}
+
+.ticket-title-link {
+  color: #1e40af;
+  cursor: pointer;
+}
+
+.ticket-title-link:hover {
+  text-decoration: underline;
+}
+
+
+.ticket-details {
+  background-color: #f1f5f9;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.back-btn {
+  /* background-color: transparent; */
+  color: #3b82f6;
+  border: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.ticket-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.ticket-details-header h2 {
+  margin: 0;
+}
+
+.ticket-details-description {
+  margin: 1rem 0;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.ticket-details-meta p {
+  margin: 0.25rem 0;
+  color: #334155;
+}
+
+.ticket-details-meta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
 }
