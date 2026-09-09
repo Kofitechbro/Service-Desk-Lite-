@@ -165,7 +165,7 @@ function MainContent({
       {/* Render the ticket creation/editing form if isFormOpen or editingTicket
       is true */}
       {(isFormOpen || editingTicket) && (
-        <div className="create-ticket-form">
+        <section className="create-ticket-form">
           <div className="form-header">
             <h2>{editingTicket ? 'Edit Ticket' : 'Create New Ticket'}</h2>
             <button
@@ -245,12 +245,12 @@ function MainContent({
               {editingTicket ? 'Update Ticket' : 'Create Ticket'}
             </button>
           </form>
-        </div>
+        </section>
       )}
 
       {/* Render the ticket details view if a ticket is selected */}
       {selectedTicket ? (
-        <div className="ticket-details">
+        <section className="ticket-details">
           <button
             type="button"
             onClick={() => onSelectTicket(null)}
@@ -292,20 +292,22 @@ function MainContent({
               <strong>Created:</strong> {selectedTicket.createdAt}
             </span>
           </div>
-        </div>
+        </section>
       ) : (
         <>
           <section className="filters-bar">
             <input
               type="search"
+              name="search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search ticket title"
+              placeholder="Search ticket"
               className="search-input"
             />
 
             <select
               value={statusFilter}
+              name='status'
               onChange={(e) => setStatusFilter(e.target.value)}
               className="filter-select"
             >
@@ -317,6 +319,7 @@ function MainContent({
 
             <select
               value={priorityFilter}
+              name='priority'
               onChange={(e) => setPriorityFilter(e.target.value)}
               className="filter-select"
             >
@@ -334,7 +337,7 @@ function MainContent({
           {filteredTickets.length === 0 ? (
             <p className="no-results">No results found</p>
           ) : (
-            <div className="ticket-list">
+            <section className="ticket-list">
               {filteredTickets.map((ticket) => (
                 <div className="ticket-card" key={ticket.id}>
                   <div className="ticket-card-header">
@@ -395,7 +398,7 @@ function MainContent({
                   </div>
                 </div>
               ))}
-            </div>
+            </section>
           )}
         </>
       )}

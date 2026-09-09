@@ -95,6 +95,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 0;
 }
 
 .stat-number {
@@ -179,7 +180,7 @@ main {
 
 .ticket-meta {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   font-size: 0.75rem;
   color: #64748b;
   margin-bottom: 1rem;
@@ -188,7 +189,7 @@ main {
 .priority-badge,
 .status-badge {
   display: inline-block;
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem;
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -353,7 +354,6 @@ main {
   text-decoration: underline;
 }
 
-
 .ticket-details {
   background-color: #f1f5f9;
   padding: 1.5rem;
@@ -400,4 +400,72 @@ main {
   gap: 1.5rem;
   font-size: 0.875rem;
   color: #64748b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-body {
+    flex-direction: column;
+  }
+
+  header {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  header h1 {
+    font-size: 1.125rem;
+  }
+
+  aside {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .stat-card {
+    padding: 0.5rem;
+    text-align: center;
+  }
+
+  .filters-bar {
+    flex-direction: column;
+  }
+
+  .ticket-card-header {
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-input,
+  .filter-select {
+    width: 100%;
+  }
+
+  .ticket-meta {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+
+  .ticket-actions {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .ticket-meta {
+    justify-content: space-between;
+  }
+
+  .ticket-cta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  header button {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
 }
